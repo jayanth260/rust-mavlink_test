@@ -62,7 +62,9 @@ impl<M: Message> MavConnection<M> for SerialConnection {
                     return ok;
                 }
                 Err(MessageReadError::Io(e)) => {
-                    if e.kind() == io::ErrorKind::UnexpectedEof {
+                    if e.kind() == io::ErrorKind::UnexpectedEof
+                        || e.kind() == io::ErrorKind::TimedOut
+                    {
                         return Err(MessageReadError::Io(e));
                     }
                 }
